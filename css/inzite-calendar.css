@@ -1,0 +1,115 @@
+.inz-event-calendar {
+  border: 1px solid #b7b7b7;
+}
+.inz-event-calendar thead {
+  background: #5C3062;
+  color: #fff;
+}
+.inz-event-calendar thead .prev_month, .inz-event-calendar thead .next_month {
+  vertical-align: middle;
+}
+.inz-event-calendar thead .prev_month a, .inz-event-calendar thead .next_month a {
+  font-size: .75rem;
+  color: #fff;
+}
+.inz-event-calendar thead .this_month {
+  vertical-align: middle;
+  text-align: center;
+  text-transform: uppercase;
+}
+.inz-event-calendar thead .this_month .this_year {
+  text-align: center;
+  font-size: .75rem;
+  line-height: 1.0;
+}
+.inz-event-calendar thead .prev_month {
+  text-align: left;
+}
+.inz-event-calendar thead .next_month {
+  text-align: right;
+}
+.inz-event-calendar tbody td {
+  font-size: 11px;
+  color: #8da2b6;
+  font-weight: bold;
+  text-align: center;
+  padding: 2px 0;
+  cursor: default;
+}
+.inz-event-calendar tbody td.active span, .inz-event-calendar tbody td.active a {
+  border-radius: 50%;
+  display: inline-block;
+  border: 2px solid #5C3062;
+  text-align: center;
+  padding: 5px 0;
+  line-height: 12px;
+  width: 26px;
+  color: #fff;
+  background: #5C3062;
+}
+.inz-event-calendar tbody td span, .inz-event-calendar tbody td a {
+  display: inline-block;
+  text-align: center;
+  border: 2px solid transparent;
+  padding: 5px 0;
+  line-height: 12px;
+  width: 26px;
+}
+.inz-event-calendar tbody td a {
+  cursor: pointer;
+}
+
+.inz_event_info {
+  text-align: center;
+}
+.inz_event_info .event {
+  text-align: left;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+.inz_event_info .event .event_date {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 1 auto;
+      -ms-flex: 0 1 auto;
+          flex: 0 1 auto;
+  margin-right: 1rem;
+}
+.inz_event_info .event .event_date .date_text {
+  background: #fff;
+  border: 1px solid #b7b7b7;
+  text-transform: uppercase;
+  color: #3e4a59;
+  text-align: center;
+  line-height: 30px;
+  font-size: .8em;
+  padding: 0 .5rem;
+  font-weight: 700;
+}
+.inz_event_info .event .event_date .date_number {
+  background: #ebebeb;
+  border: 1px solid #b7b7b7;
+  border-top: 0;
+  text-transform: uppercase;
+  color: #3e4a59;
+  font-weight: bold;
+  text-align: center;
+  line-height: 30px;
+  padding: 0 .5rem;
+}
+.inz_event_info .event .event_text {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+  font-size: 0.9rem;
+}
+.inz_event_info .event .event_text .text_title {
+  font-weight: bold;
+  color: #5C3062;
+}
+.inz_event_info .event .event_text .text_date {
+  font-weight: normal;
+  color: #23282d;
+}
