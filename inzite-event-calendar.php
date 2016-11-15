@@ -3,7 +3,7 @@
 Plugin Name: Inzite Event Calendar
 Description: Show events in a calendar.
 Author: Johnnie Berthelsen & Rasmus Jürs
-Verson: 1.0.0
+Verson: 1.0.1
 Author URI: http://inzite.dk
 */
 
@@ -102,7 +102,7 @@ wp_enqueue_style(
 		'inzite-calendar',
 		MY_PLUGIN_PATH . 'css/inzite-calendar.css',
 		false,
-		'1.0.0',
+		'1.0.1',
 		'all'
 );
 
@@ -408,9 +408,6 @@ function event_add_role_caps() {
 		  $role->add_cap( 'delete_published_events' );
 	}
 };
-
-
-
 
 /* Filter the single_template with our custom function*/
 function get_custom_post_type_template($single_template) {

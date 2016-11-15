@@ -10,9 +10,9 @@
 						<?php the_post_thumbnail(); // Fullsize image for the single post ?>
 				<?php endif; ?>
 
-				<h2>
+				<h1 class="event-title">
 					<?php the_title(); ?>
-				</h2>
+				</h1>
 
 				<p class="date">
 					<?php
@@ -32,8 +32,6 @@
 
 				<?php the_content(); ?>
 
-				<?php // comments_template(); ?>
-
 			</article>
 
 		<?php endwhile; ?>
@@ -44,5 +42,4 @@
 
 
 	</main>
-<h1>PLUGIN</h1>
 <?php get_footer(); ?>
