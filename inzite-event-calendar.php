@@ -3,7 +3,7 @@
 Plugin Name: Inzite Event Calendar
 Description: Show events in a calendar.
 Author: Johnnie Berthelsen & Rasmus Jürs
-Version: 1.0.1
+Version: 1.0.2
 Author URI: http://inzite.dk
 */
 
