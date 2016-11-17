@@ -2,31 +2,31 @@
 // Register Custom Post Type
 function events_post_type() {
   $labels = array(
-    'name'                => _x( 'Arrangementer', 'Post Type General Name', 'text_domain' ),
-    'singular_name'       => _x( 'Arrangement', 'Post Type Singular Name', 'text_domain' ),
-    'menu_name'           => __( 'Arrangementer', 'text_domain' ),
-    'name_admin_bar'      => __( 'Arrangementer', 'text_domain' ),
-    'parent_item_colon'   => __( 'Arrangement', 'text_domain' ),
-    'all_items'           => __( 'Alle Arrangementer', 'text_domain' ),
-    'add_new_item'        => __( 'Tilføj Arrangement', 'text_domain' ),
-    'add_new'             => __( 'Tilføj ny', 'text_domain' ),
-    'new_item'            => __( 'Nyt Arrangement', 'text_domain' ),
-    'edit_item'           => __( 'Rediger Arrangement', 'text_domain' ),
-    'update_item'         => __( 'Opdater Arrangement', 'text_domain' ),
-    'view_item'           => __( 'Vis Arrangement', 'text_domain' ),
-    'search_items'        => __( 'Find Arrangement', 'text_domain' ),
-    'not_found'           => __( 'Ikke fundet', 'text_domain' ),
-    'not_found_in_trash'  => __( 'Ikke fundet i papirkurv', 'text_domain' ),
+    'name'                => _x( 'Events', 'Post Type General Name', 'github-Jursdotme-inzite-events-calendar' ),
+    'singular_name'       => _x( 'Event', 'Post Type Singular Name', 'github-Jursdotme-inzite-events-calendar' ),
+    'menu_name'           => __( 'Events', 'github-Jursdotme-inzite-events-calendar' ),
+    'name_admin_bar'      => __( 'Events', 'github-Jursdotme-inzite-events-calendar' ),
+    'parent_item_colon'   => __( 'Event', 'github-Jursdotme-inzite-events-calendar' ),
+    'all_items'           => __( 'Alle Events', 'github-Jursdotme-inzite-events-calendar' ),
+    'add_new_item'        => __( 'Tilføj Event', 'github-Jursdotme-inzite-events-calendar' ),
+    'add_new'             => __( 'Tilføj ny', 'github-Jursdotme-inzite-events-calendar' ),
+    'new_item'            => __( 'Ny Event', 'github-Jursdotme-inzite-events-calendar' ),
+    'edit_item'           => __( 'Rediger Event', 'github-Jursdotme-inzite-events-calendar' ),
+    'update_item'         => __( 'Opdater Event', 'github-Jursdotme-inzite-events-calendar' ),
+    'view_item'           => __( 'Vis Event', 'github-Jursdotme-inzite-events-calendar' ),
+    'search_items'        => __( 'Find Event', 'github-Jursdotme-inzite-events-calendar' ),
+    'not_found'           => __( 'Ikke fundet', 'github-Jursdotme-inzite-events-calendar' ),
+    'not_found_in_trash'  => __( 'Ikke fundet i papirkurv', 'github-Jursdotme-inzite-events-calendar' ),
   );
   $rewrite = array(
-    'slug'                => 'reservationer',
+    'slug'                => __('events', 'github-Jursdotme-inzite-events-calendar'),
     'with_front'          => true,
     'pages'               => true,
     'feeds'               => true,
   );
   $args = array(
-    'label'               => __( 'Arrangement', 'text_domain' ),
-    'description'         => __( 'Arrangementer', 'text_domain' ),
+    'label'               => __( 'Event', 'github-Jursdotme-inzite-events-calendar' ),
+    'description'         => __( 'Events', 'github-Jursdotme-inzite-events-calendar' ),
     'labels'              => $labels,
     'supports'            => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
     'taxonomies'          => array( ),
@@ -46,6 +46,6 @@ function events_post_type() {
     'capability_type'     => array( 'event', 'events'),
     'map_meta_cap'        => true,
   );
-  register_post_type( 'inz_events', $args );
+  register_post_type( 'inzite_events', $args );
 }
 add_action( 'init', 'events_post_type', 0 );

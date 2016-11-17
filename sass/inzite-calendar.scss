@@ -1,114 +1,143 @@
-$brand-color-1: #5C3062;
-$brand-color-2: #23282d;
+$brand-color-1: #305562;
+$brand-color-2: #2a2e30;
 
-.inz-event-calendar {
-  border:1px solid #b7b7b7;
-  thead {
-    background: $brand-color-1;
-    color:#fff;
-    .prev_month, .next_month {
-      vertical-align: middle;
-      a {
-        font-size: .75rem;
-        color:#fff;
-      }
-    }
-    .this_month {
-      vertical-align: middle;
-      text-align: center;
-      text-transform: uppercase;
-      .this_year {
-        text-align: center;
-        font-size: .75rem;
-        line-height: 1.0;
-      }
-    }
-    .prev_month {
-      text-align: left;
-    }
-    .next_month {
-      text-align: right;
-    }
-  }
-  tbody {
-    td {
-      font-size:11px;
-      color:#8da2b6;
-      font-weight: bold;
-      text-align: center;
-      padding: 2px 0;
-      cursor: default;
-      &.active {
-        span, a {
-          border-radius: 50%;
-          display: inline-block;
-          border:2px solid $brand-color-1;
-          text-align: center;
-          padding:5px 0;
-          line-height: 12px;
-          width: 26px;
-          color:#fff;
-          background: $brand-color-1;
+.inzite-event-calendar {
+    border: 1px solid #b7b7b7;
+
+    thead {
+        background: $brand-color-1;
+        color: #fff;
+
+        .next_month,
+        .prev_month {
+            vertical-align: middle;
+
+            a {
+                font-size: 0.75rem;
+                color: #fff;
+            }
         }
-      }
-      span, a {
-        display: inline-block;
-        text-align: center;
-        border:2px solid transparent;
-        padding:5px 0;
-        line-height: 12px;
-        width: 26px;
-      }
-      a {
-        cursor: pointer;
-      }
+
+        .this_month {
+            vertical-align: middle;
+            text-align: center;
+            text-transform: uppercase;
+
+            .this_year {
+                text-align: center;
+                font-size: 0.75rem;
+                line-height: 1.0;
+            }
+        }
+
+        .prev_month {
+            text-align: left;
+        }
+
+        .next_month {
+            text-align: right;
+        }
     }
-  }
+
+    tbody {
+        td {
+            font-size: 11px;
+            color: #8da2b6;
+            font-weight: bold;
+            text-align: center;
+            padding: 2px 0;
+            cursor: default;
+
+            &.active {
+                a,
+                span {
+                    border-radius: 50%;
+                    display: inline-block;
+                    border: 2px solid $brand-color-1;
+                    text-align: center;
+                    padding: 5px 0;
+                    line-height: 12px;
+                    width: 26px;
+                    color: #fff;
+                    background: $brand-color-1;
+                }
+            }
+
+            a,
+            span {
+                display: inline-block;
+                text-align: center;
+                border: 2px solid transparent;
+                padding: 5px 0;
+                line-height: 12px;
+                width: 26px;
+            }
+
+            a {
+                cursor: pointer;
+            }
+        }
+    }
 }
-.inz_event_info {
-  text-align: center;
-  .event {
-    text-align: left;
-    display: flex;
-    .event_date {
-      // @include span-columns(3);
-      flex: 0 1 auto;
-      margin-right: 1rem;
-      .date_text {
-        background:#fff;
-        border:1px solid #b7b7b7;
-        text-transform: uppercase;
-        color:#3e4a59;
-        text-align: center;
-        line-height: 30px;
-        font-size: .8em;
-        padding: 0 .5rem;
-        font-weight: 700;
-      }
-      .date_number {
-        background:#ebebeb;
-        border:1px solid #b7b7b7;
-        border-top:0;
-        text-transform: uppercase;
-        color:#3e4a59;
-        font-weight: bold;
-        text-align: center;
-        line-height: 30px;
-        padding: 0 .5rem;
-      }
+
+.inzite_event_info {
+    text-align: center;
+
+    .event {
+        text-align: left;
+        display: flex;
+
+        .event_date {
+            // @include span-columns(3);
+            flex: 0 1 auto;
+            margin-right: 1rem;
+
+            .date_text {
+                background: #fff;
+                border: 1px solid #b7b7b7;
+                text-transform: uppercase;
+                color: #3e4a59;
+                text-align: center;
+                line-height: 30px;
+                font-size: 0.8em;
+                padding: 0 0.5rem;
+                font-weight: 700;
+            }
+
+            .date_number {
+                background: #ebebeb;
+                border: 1px solid #b7b7b7;
+                border-top: 0;
+                text-transform: uppercase;
+                color: #3e4a59;
+                font-weight: bold;
+                text-align: center;
+                line-height: 30px;
+                padding: 0 0.5rem;
+            }
+        }
+
+        .event_text {
+            // @include span-columns(9);
+            flex: 1 1 auto;
+            font-size: 0.9rem;
+
+            .text_title {
+                font-weight: bold;
+                color: $brand-color-1;
+            }
+
+            .text_date {
+                font-weight: normal;
+                color: $brand-color-2;
+            }
+        }
     }
-    .event_text {
-      // @include span-columns(9);
-      flex: 1 1 auto;
-      font-size: 0.9rem;
-      .text_title {
-        font-weight: bold;
-        color: $brand-color-1;
-      }
-      .text_date {
-        font-weight: normal;
-        color: $brand-color-2;
-      }
-    }
-  }
+}
+
+.single-inzite_events main {
+    max-width: 1088px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 4em 30px;
 }

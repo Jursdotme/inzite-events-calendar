@@ -1,4 +1,4 @@
 <?php
    get_event_calendar();
 ?>
-<div class="inz_event_info"></div>
+<div class="inzite_event_info"></div>

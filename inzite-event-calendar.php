@@ -3,54 +3,69 @@
 Plugin Name: Inzite Event Calendar
 Description: Show events in a calendar.
 Author: Johnnie Berthelsen & Rasmus Jürs
-Version: 1.0.2
+Version: 1.0.3
 Author URI: http://inzite.dk
+Text Domain: inzite_event_calendar
+Domain Path: /languages/
 */
-
-/**
- * Initialize the language files
- */
 
 define( 'MY_PLUGIN_PATH', plugin_dir_url( __FILE__ ) );
 
-function inzite_event_calendar_lang(){
-	load_plugin_textdomain('inzite_event_calendar', false, MY_PLUGIN_PATH . '/lang/');
-}
-add_action('plugins_loaded', 'inzite_event_calendar_lang');
+add_action( 'init', 'wpdocs_load_textdomain' );
 
+/**
+ * Load plugin textdomain.
+ */
+function wpdocs_load_textdomain() {
+  load_plugin_textdomain( 'github-Jursdotme-inzite-events-calendar', false, MY_PLUGIN_PATH . '/languages' );
+}
+
+add_action( 'wp_enqueue_scripts' , 'frontend_enqueue_scripts' );
+add_action( 'wp_ajax_nopriv_inzite_show_events', 'frontend_ajax_date_handler' );
+add_action( 'wp_ajax_inzite_show_events', 'frontend_ajax_date_handler' );
+add_action( 'wp_ajax_nopriv_inzite_change_month', 'frontend_ajax_month_handler' );
+add_action( 'wp_ajax_inzite_change_month', 'frontend_ajax_month_handler' );
 
 if (is_admin()) {
-	add_action( 'admin_enqueue_scripts', 'inz_events_admin_scripts' );
-	add_action( 'add_meta_boxes', 'inz_events_metabox' );
-	add_action( 'save_post', 'inz_events_save_info' );
+	add_action( 'admin_enqueue_scripts', 'inzite_events_admin_scripts' );
+	add_action( 'add_meta_boxes', 'inzite_events_metabox' );
+	add_action( 'save_post', 'inzite_events_save_info' );
 }
 
 include( plugin_dir_path( __FILE__ ) . 'inc/post-type.php');
 
 function frontend_enqueue_scripts() {
   wp_enqueue_script(
-      'inz-event-calendar',
-      MY_PLUGIN_PATH . 'js/inz_events.js',
+      'inzite-event-calendar',
+      MY_PLUGIN_PATH . 'js/inzite_events.js',
       array( 'jquery'),
       '1.0',
       true
   );
-  wp_localize_script( 'inz-event-calendar' , 'inz_events', array('ajaxurl' => admin_url( 'admin-ajax.php'), 'img' => MY_PLUGIN_PATH . 'img/' ) );
+  wp_localize_script( 'inzite-event-calendar' , 'inzite_events', array('ajaxurl' => admin_url( 'admin-ajax.php'), 'img' => MY_PLUGIN_PATH . 'img/' ) );
+
+  wp_enqueue_style(
+  		'inzite-calendar',
+  		MY_PLUGIN_PATH . 'css/inzite-calendar.css',
+  		false,
+  		'1.0.1',
+  		'all'
+  );
 }
 
 function frontend_ajax_date_handler() {
   global $wpdb;
   $get_date = intval(esc_attr($_POST['date']));
-  $url = site_url( '/reservationer/' );
+  $url = site_url( '/events/' );
   if ($get_date) {
     $get_date = date('Y-m-d', $get_date);
     $posts = $wpdb->get_results("SELECT p.ID, p.post_title, p.post_excerpt, DATE_FORMAT(FROM_UNIXTIME(pm.meta_value), '%d') as date_number,
       DATE_FORMAT(FROM_UNIXTIME(pm.meta_value), '%a') as date_text, DATE_FORMAT(FROM_UNIXTIME(pm.meta_value), '%M') as date_month,
       pm2.meta_value as start_time, pm3.meta_value as end_time, CONCAT( '{$url}' , p.post_name ) as post_name
-      FROM $wpdb->posts as p INNER JOIN $wpdb->postmeta as pm ON pm.post_id = p.ID AND pm.meta_key = 'inz_event_start_date'
-      LEFT JOIN $wpdb->postmeta as pm2 ON pm2.post_id = p.ID AND pm2.meta_key = 'inz_event_start_time'
-      LEFT JOIN $wpdb->postmeta as pm3 ON pm3.post_id = p.ID AND pm3.meta_key = 'inz_event_end_time'
-      WHERE p.post_type = 'inz_events' AND p.post_status = 'publish'
+      FROM $wpdb->posts as p INNER JOIN $wpdb->postmeta as pm ON pm.post_id = p.ID AND pm.meta_key = 'inzite_event_start_date'
+      LEFT JOIN $wpdb->postmeta as pm2 ON pm2.post_id = p.ID AND pm2.meta_key = 'inzite_event_start_time'
+      LEFT JOIN $wpdb->postmeta as pm3 ON pm3.post_id = p.ID AND pm3.meta_key = 'inzite_event_end_time'
+      WHERE p.post_type = 'inzite_events' AND p.post_status = 'publish'
       AND DATE_FORMAT(FROM_UNIXTIME(pm.meta_value), '%Y-%m-%d') = '{$get_date}'
       ", OBJECT);
 
@@ -62,18 +77,18 @@ function frontend_ajax_date_handler() {
 function frontend_ajax_month_handler() {
   $get_month = intval(esc_attr($_POST['month']));
   $get_year = intval(esc_attr($_POST['year']));
-  $this->get_event_calendar($get_month,$get_year);
+  get_event_calendar($get_month,$get_year);
 }
 
 // Enqueue Styles and Scripts
-function inz_events_admin_scripts( $hook ) {
+function inzite_events_admin_scripts( $hook ) {
 
     global $post_type;
 
-    if ( ( 'post.php' == $hook || 'post-new.php' == $hook ) && ( 'inz_events' == $post_type ) ) {
+    if ( ( 'post.php' == $hook || 'post-new.php' == $hook ) && ( 'inzite_events' == $post_type ) ) {
       wp_enqueue_script(
-          'inz-event-calendar',
-          MY_PLUGIN_PATH . 'js/inz_events_admin.js',
+          'inzite-event-calendar',
+          MY_PLUGIN_PATH . 'js/inzite_events_admin.js',
           array( 'jquery', 'jquery-ui-datepicker' ),
           '1.0',
           true
@@ -87,10 +102,10 @@ function inz_events_admin_scripts( $hook ) {
           'all'
       );
 
-		} else if ( ( 'edit.php' == $hook ) && ( 'inz_events' == $post_type ) ) {
+		} else if ( ( 'edit.php' == $hook ) && ( 'inzite_events' == $post_type ) ) {
           wp_enqueue_script(
-              'inz_events',
-              MY_PLUGIN_PATH . 'js/inz_events_admin.js',
+              'inzite_events',
+              MY_PLUGIN_PATH . 'js/inzite_events_admin.js',
               array( 'jquery', 'jquery-ui-datepicker' ),
               '1.0',
               true
@@ -98,24 +113,16 @@ function inz_events_admin_scripts( $hook ) {
     }
 }
 
-wp_enqueue_style(
-		'inzite-calendar',
-		MY_PLUGIN_PATH . 'css/inzite-calendar.css',
-		false,
-		'1.0.1',
-		'all'
-);
-
 
 // Add Event info metabox
-function inz_events_metabox( $post_type ) {
+function inzite_events_metabox( $post_type ) {
 
-    if ($post_type == 'inz_events') {
+    if ($post_type == 'inzite_events') {
     add_meta_box(
-        'inz_events-info-metabox',
-        __( 'Datoer', 'inz_events' ),
-        'inz_events_render_metabox',
-        'inz_events',
+        'inzite_events-info-metabox',
+        __( 'Datoer', 'inzite_events' ),
+        'inzite_events_render_metabox',
+        'inzite_events',
         'side',
         'core'
     );
@@ -123,16 +130,16 @@ function inz_events_metabox( $post_type ) {
 }
 
 // Add Event info metabox contents
-function inz_events_render_metabox( $post ) {
+function inzite_events_render_metabox( $post ) {
 
   // generate a nonce field
-  wp_nonce_field( basename( __FILE__ ), 'inz_event-info-nonce' );
+  wp_nonce_field( basename( __FILE__ ), 'inzite_event-info-nonce' );
 
   // get previously saved meta values (if any)
-  $event_start_date = get_post_meta( $post->ID, 'inz_event_start_date', true );
-  $event_start_time = get_post_meta( $post->ID, 'inz_event_start_time', true );
-  $event_end_time = get_post_meta( $post->ID, 'inz_event_end_time', true );
-  //$event_end_date = get_post_meta( $post->ID, 'inz_event_end_date', true );
+  $event_start_date = get_post_meta( $post->ID, 'inzite_event_start_date', true );
+  $event_start_time = get_post_meta( $post->ID, 'inzite_event_start_time', true );
+  $event_end_time = get_post_meta( $post->ID, 'inzite_event_end_time', true );
+  //$event_end_date = get_post_meta( $post->ID, 'inzite_event_end_date', true );
   // if there is previously saved value then retrieve it, else set it to the current time
   $event_start_date = ! empty( $event_start_date ) ? $event_start_date : time();
 
@@ -141,33 +148,33 @@ function inz_events_render_metabox( $post ) {
 
 
   echo'<p>';
-  echo'<label for="inz_event_start_date">Arrangement start dato:</label>';
-  echo'<input class="widefat" id="inz_event_start_date" type="text" name="inz_event_start_date" placeholder="Start dato" value="'.date( 'd-m-Y', $event_start_date ).'" />';
-  echo'<label for="inz_event_start_time">Start tidspunkt:</label>';
-  echo'<input class="widefat" id="inz_event_start_time" type="text" name="inz_event_start_time" placeholder="ex: 17:00" value="'.$event_start_time.'" />';
-  echo'<label for="inz_event_end_time">Slut tidspunkt:</label>';
-  echo'<input class="widefat" id="inz_event_end_time" type="text" name="inz_event_end_time" placeholder="18:00" value="'.$event_end_time.'" />';
-  // echo'<label for="inz_event_end_date">Arrangement slut dato:</label>';
-  // echo'<input class="widefat" id="inz_event_end_date" type="text" name="inz_event_end_date" placeholder="Slut dato" value="'.date( 'd-m-Y', $event_end_date ).'" />';
+  echo'<label for="inzite_event_start_date">Arrangement start dato:</label>';
+  echo'<input class="widefat" id="inzite_event_start_date" type="text" name="inzite_event_start_date" placeholder="Start dato" value="'.date( 'd-m-Y', $event_start_date ).'" />';
+  echo'<label for="inzite_event_start_time">Start tidspunkt:</label>';
+  echo'<input class="widefat" id="inzite_event_start_time" type="text" name="inzite_event_start_time" placeholder="ex: 17:00" value="'.$event_start_time.'" />';
+  echo'<label for="inzite_event_end_time">Slut tidspunkt:</label>';
+  echo'<input class="widefat" id="inzite_event_end_time" type="text" name="inzite_event_end_time" placeholder="18:00" value="'.$event_end_time.'" />';
+  // echo'<label for="inzite_event_end_date">Arrangement slut dato:</label>';
+  // echo'<input class="widefat" id="inzite_event_end_date" type="text" name="inzite_event_end_date" placeholder="Slut dato" value="'.date( 'd-m-Y', $event_end_date ).'" />';
   echo'</p>';
   echo'<br>';
 }
 
 // Save meta values
-function inz_events_save_info( $post_id ) {
+function inzite_events_save_info( $post_id ) {
 
   global $_POST;
 
   // checking if the post being saved is an 'event',
   // if not, then return
-  if ( isset($_POST['post_type']) && 'inz_events' != $_POST['post_type'] ) {
+  if ( isset($_POST['post_type']) && 'inzite_events' != $_POST['post_type'] ) {
     return;
   }
 
   // checking for the 'save' status
   $is_autosave = wp_is_post_autosave( $post_id );
   $is_revision = wp_is_post_revision( $post_id );
-  $is_valid_nonce = ( isset( $_POST['inz_event-info-nonce'] ) && ( wp_verify_nonce( $_POST['inz_event-info-nonce'], basename( __FILE__ ) ) ) ) ? true : false;
+  $is_valid_nonce = ( isset( $_POST['inzite_event-info-nonce'] ) && ( wp_verify_nonce( $_POST['inzite_event-info-nonce'], basename( __FILE__ ) ) ) ) ? true : false;
 
   // exit depending on the save status or if the nonce is not valid
   if ( $is_autosave || $is_revision || ! $is_valid_nonce ) {
@@ -175,16 +182,16 @@ function inz_events_save_info( $post_id ) {
   }
 
   // checking for the values and performing necessary actions
-  if ( isset( $_POST['inz_event_start_date'] ) ) {
-      update_post_meta( $post_id, 'inz_event_start_date', strtotime( $_POST['inz_event_start_date'] ) );
+  if ( isset( $_POST['inzite_event_start_date'] ) ) {
+      update_post_meta( $post_id, 'inzite_event_start_date', strtotime( $_POST['inzite_event_start_date'] ) );
   }
 
-  if ( isset( $_POST['inz_event_start_time'] ) ) {
-      update_post_meta( $post_id, 'inz_event_start_time', ( $_POST['inz_event_start_time'] ) );
+  if ( isset( $_POST['inzite_event_start_time'] ) ) {
+      update_post_meta( $post_id, 'inzite_event_start_time', ( $_POST['inzite_event_start_time'] ) );
   }
 
-  if ( isset( $_POST['inz_event_end_time'] ) ) {
-    update_post_meta( $post_id, 'inz_event_end_time', ( $_POST['inz_event_end_time'] ) );
+  if ( isset( $_POST['inzite_event_end_time'] ) ) {
+    update_post_meta( $post_id, 'inzite_event_end_time', ( $_POST['inzite_event_end_time'] ) );
   }
 
 }
@@ -245,14 +252,14 @@ function get_event_calendar(  $monthnum = '', $year='' ) {
   }
 
   /* translators: Calendar caption: 1: month name, 2: 4-digit year */
-  $calendar_output = '<table class="inz-event-calendar">
+  $calendar_output = '<table class="inzite-event-calendar">
   <thead>
   <tr>
   ';
 
-  $calendar_output .= "\n\t\t".'<td colspan="2" class="prev_month"><a href="javascript:inz_change_month('.$prevmonth.','.$prevyear.');">&laquo; Forrige</a></td>';
+  $calendar_output .= "\n\t\t".'<td colspan="2" class="prev_month"><a href="javascript:inzite_change_month('.$prevmonth.','.$prevyear.');">&laquo;' . __('Tilbage', 'inzite_events') . '</a></td>';
   $calendar_output .= "\n\t\t".'<td colspan="3" class="this_month">'. $wp_locale->get_month( $thismonth ) . '<div class="this_year">' . date( 'Y', $unixmonth ).'</div></td>';
-  $calendar_output .= "\n\t\t".'<td colspan="2" class="next_month"><a href="javascript:inz_change_month('.$nextmonth.','.$nextyear.');">Næste &raquo;</a></td>';
+  $calendar_output .= "\n\t\t".'<td colspan="2" class="next_month"><a href="javascript:inzite_change_month('.$nextmonth.','.$nextyear.');">'.__('Frem', 'inzite_events').' &raquo;</a></td>';
 
   $calendar_output .= '
   </tr>
@@ -266,14 +273,14 @@ function get_event_calendar(  $monthnum = '', $year='' ) {
 
   // Get days with posts //DAYOFMONTH
   $dayswithposts = $wpdb->get_results("SELECT DAYOFMONTH(FROM_UNIXTIME(pm.meta_value)), p.ID
-    FROM $wpdb->posts as p INNER JOIN $wpdb->postmeta as pm ON pm.post_id = p.ID AND pm.meta_key = 'inz_event_start_date'
-    WHERE p.post_type = 'inz_events' AND p.post_status = 'publish'
+    FROM $wpdb->posts as p INNER JOIN $wpdb->postmeta as pm ON pm.post_id = p.ID AND pm.meta_key = 'inzite_event_start_date'
+    WHERE p.post_type = 'inzite_events' AND p.post_status = 'publish'
     AND FROM_UNIXTIME(pm.meta_value) <= '{$thisyear}-{$thismonth}-{$last_day} 23:59:59'
     AND FROM_UNIXTIME(pm.meta_value) >= '{$thisyear}-{$thismonth}-01 00:00:00'
     ", ARRAY_N);
     // ,pm2.meta_value, pm3.meta_value
-    // LEFT JOIN $wpdb->postmeta as pm2 ON pm2.post_id = p.ID AND pm2.meta_key = 'inz_event_start_time'
-    // LEFT JOIN $wpdb->postmeta as pm3 ON pm3.post_id = p.ID AND pm3.meta_key = 'inz_event_end_time'
+    // LEFT JOIN $wpdb->postmeta as pm2 ON pm2.post_id = p.ID AND pm2.meta_key = 'inzite_event_start_time'
+    // LEFT JOIN $wpdb->postmeta as pm3 ON pm3.post_id = p.ID AND pm3.meta_key = 'inzite_event_end_time'
 
   // echo '<pre>';
   if ( $dayswithposts ) {
@@ -413,12 +420,11 @@ function event_add_role_caps() {
 function get_custom_post_type_template($single_template) {
      global $post;
 
-
-		 if ($post->post_type == 'inz_events') {
-			 if (file_exists(get_template_directory() . '/templates/single-inz_events.php')) {
-				 $single_template = get_template_directory() . '/templates/single-inz_events.php';
+		 if ($post->post_type == 'inzite_events') {
+			 if (file_exists(get_template_directory() . '/templates/single-inzite_events.php')) {
+				 $single_template = get_template_directory() . '/templates/single-inzite_events.php';
 			 } else {
-				 $single_template = dirname( __FILE__ ) . '/single-inz_events.php';
+				 $single_template = dirname( __FILE__ ) . '/single-inzite_events.php';
 			 }
      }
      return $single_template;
